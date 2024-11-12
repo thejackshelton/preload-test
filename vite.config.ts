@@ -4,7 +4,7 @@
  */
 import { defineConfig, type UserConfig } from "vite";
 import { qwikVite } from "@qwik.dev/core/optimizer";
-import { qwikCity } from "@qwik.dev/router/vite";
+import { qwikRouter } from "@qwik.dev/router/vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 import pkg from "./package.json";
 
@@ -21,7 +21,7 @@ errorOnDuplicatesPkgDeps(devDependencies, dependencies);
  */
 export default defineConfig(({ command, mode }): UserConfig => {
   return {
-    plugins: [qwikCity(), qwikVite(), tsconfigPaths()],
+    plugins: [qwikRouter(), qwikVite(), tsconfigPaths()],
     // This tells Vite which dependencies to pre-build in dev mode.
     optimizeDeps: {
       // Put problematic deps that break bundling here, mostly those with binaries.
