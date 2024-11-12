@@ -1,16 +1,17 @@
-import { component$ } from "@builder.io/qwik";
-import type { DocumentHead } from "@builder.io/qwik-city";
+import { component$ } from "@qwik.dev/core";
+import type { DocumentHead } from "@qwik.dev/router";
+import { Dropdown } from "@qwik-ui/headless";
 
 export default component$(() => {
   return (
-    <>
-      <h1>Hi 👋</h1>
-      <div>
-        Can't wait to see what you build with qwik!
-        <br />
-        Happy coding.
-      </div>
-    </>
+    <Dropdown.Root>
+      <Dropdown.Trigger>Git Settings</Dropdown.Trigger>
+      <Dropdown.Popover gutter={8}>
+        <Dropdown.Item>Item 1</Dropdown.Item>
+        <Dropdown.Item>Item 2</Dropdown.Item>
+        <Dropdown.Item>Item 3</Dropdown.Item>
+      </Dropdown.Popover>
+    </Dropdown.Root>
   );
 });
 
