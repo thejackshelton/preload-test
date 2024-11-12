@@ -4,6 +4,7 @@ import { RouterHead } from "./components/router-head/router-head";
 import { isDev } from "@qwik.dev/core/build";
 
 import "./global.css";
+import { PreloadOffline } from "./components/offline/offline";
 
 export default component$(() => {
   /**
@@ -24,6 +25,7 @@ export default component$(() => {
           />
         )}
         <RouterHead />
+        <PreloadOffline />
       </head>
       <body lang="en">
         <RouterOutlet />
