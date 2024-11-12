@@ -1,4 +1,4 @@
-import { component$ } from "@qwik.dev/core";
+import { component$, useVisibleTask$ } from "@qwik.dev/core";
 import { QwikRouterProvider, RouterOutlet } from "@qwik.dev/router";
 import { RouterHead } from "./components/router-head/router-head";
 import { isDev } from "@qwik.dev/core/build";
@@ -13,6 +13,10 @@ export default component$(() => {
    *
    * Don't remove the `<head>` and `<body>` elements.
    */
+
+  useVisibleTask$(() => {
+    console.log("IN ROOT");
+  });
 
   return (
     <QwikRouterProvider>

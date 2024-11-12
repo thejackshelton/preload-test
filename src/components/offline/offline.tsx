@@ -1,25 +1,44 @@
-import { component$, useSignal, useTask$ } from "@qwik.dev/core";
-import { QwikManifest } from "@qwik.dev/core/optimizer";
-import { useLocation } from "@qwik.dev/router";
+import {
+  component$,
+  sync$,
+  useOnWindow,
+  useVisibleTask$,
+} from "@qwik.dev/core";
 
 export const PreloadOffline = component$(() => {
-  const location = useLocation();
-  const bundles = useSignal<string[]>([]);
-  useTask$(async () => {
-    const res = await fetch(location.url.origin + "/q-manifest.json");
-    const manifest: QwikManifest = await res.json();
-    bundles.value = Object.keys(manifest.bundles);
+  console.log("PRELOAD OFFLINE");
+
+  useVisibleTask$(() => {
+    console.log("VISIBLE TASK");
   });
-  return (
-    <>
-      {bundles.value.map((bundle) => (
-        <link
-          key={bundle}
-          rel="modulepreload"
-          href={"build/" + bundle}
-          fetchPriority="low"
-        />
-      ))}
-    </>
+
+  useOnWindow(
+    "load",
+    sync$(() => {
+      console.log("DOMContentLoaded");
+      const stateScript = document.querySelector('script[type="qwik/state"]');
+      if (stateScript?.textContent) {
+        const state = JSON.parse(stateScript.textContent);
+        const qChunks = new Set<string>();
+
+        // Updated regex to find chunks in the format "q-XXXXXXXX.js"
+        JSON.stringify(state).replace(/q-[A-Za-z0-9_]+\.js/g, (match) => {
+          qChunks.add(match);
+          return match;
+        });
+
+        // Append link tags to head
+        console.log(qChunks);
+        qChunks.forEach((chunk) => {
+          const link = document.createElement("link");
+          link.rel = "modulepreload";
+          link.href = "build/" + chunk;
+          link.fetchPriority = "low";
+          document.head.appendChild(link);
+        });
+      }
+    })
   );
+
+  return <></>;
 });
